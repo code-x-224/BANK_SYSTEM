@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 
 public struct Person
@@ -39,12 +40,11 @@ class Program
                 guy1.phone = Console.ReadLine();
                 Console.Write("\t\tEnter account number:");
                 guy1.account_no = Console.ReadLine();
-                Console.Write("\t\tEnter password:");
-                guy1.pass = Console.ReadLine();
+                guy1.pass = GetPassword();
                 guy1.balance = 0;
                 filename = guy1.phone + ".dat";
                 if(File.Exists(filename)){
-                    Console.WriteLine("\t\tSorry !! Account already exists.");
+                    Console.WriteLine("\n\t\tSorry !! Account already exists.");
                 }
                 else{
                
@@ -57,7 +57,7 @@ class Program
                     writer.WriteLine(guy1.balance);
                 }
 
-                Console.WriteLine("\t\tAccount registration successful.");
+                Console.WriteLine("\n\t\tAccount registration successful.");
                 }
             }
 
@@ -107,7 +107,7 @@ class Program
                                         writer.WriteLine(guy1.pass);
                                         writer.WriteLine(guy1.balance);
                                     }
-                                    Console.WriteLine($"\t\tDeposit of Ksh.{guy1.deposit:C2} on {currenttime} was successful. Your account balance is {guy1.balance:C2}.Transaction reference:");
+                                    Console.WriteLine($"\t\tDeposit of Ksh.{deposit:C2} on {currenttime} was successful. Your account balance is {guy1.balance:C2}.Transaction reference:");
                                     break;
                                 case 2:
                                     Console.Clear();
@@ -126,7 +126,7 @@ class Program
                                         writer.WriteLine(guy1.pass);
                                         writer.WriteLine(guy1.balance);
                                     }
-                                    Console.WriteLine($"\t\tWithdrawal of Ksh.{guy1.deposit:C2} on {currenttime} successful.Your account balance is{guy1.balance:C2}.Transaction reference:"); 
+                                    Console.WriteLine($"\t\tWithdrawal of Ksh.{deposit:C2} on {currenttime} successful.Your account balance is{guy1.balance:C2}.Transaction reference:"); 
                                     }
                                     break;
                                 case 3:
@@ -275,5 +275,35 @@ class Program
         Console.WriteLine("\t\tEnter 4 to check balance");
         Console.WriteLine("\t\tEnter 5 to change password");
         Console.WriteLine("\t\tEnter 6 to log out");
+    }
+     static string GetPassword()
+    {
+        Console.Write("\t\tEnter password:");
+        StringBuilder password = new StringBuilder();
+
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            if (key.Key == ConsoleKey.Enter)
+            {
+                break;
+            }
+            else if (key.Key == ConsoleKey.Backspace)
+            {
+                if (password.Length > 0)
+                {
+                    password.Remove(password.Length - 1, 1);
+                    Console.Write("\b \b"); // Move the cursor back and erase the character
+                }
+            }
+            else
+            {
+                password.Append(key.KeyChar);
+                Console.Write("*");
+            }
+        }
+
+        return password.ToString();
     }
 }
