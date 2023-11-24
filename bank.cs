@@ -41,7 +41,8 @@ class Program
                 Console.Write("\t\tEnter account number:");
                 guy1.account_no = Console.ReadLine();
                 guy1.pass = GetPassword();
-                guy1.balance = 0;
+                Console.Write("\n\t\tEnter account balance:");
+                guy1.balance =float.Parse(Console.ReadLine());
                 filename = guy1.phone + ".dat";
                 if(File.Exists(filename)){
                     Console.WriteLine("\n\t\tSorry !! Account already exists.");
@@ -66,8 +67,7 @@ class Program
                 Console.Clear();
                 Console.Write("\t\tEnter phone number:");
                 login = Console.ReadLine();
-                Console.Write("\t\tEnter password:");
-                pass2 = Console.ReadLine();
+                pass2 = GetPassword();
 
                 filename = login + ".dat";
 
@@ -85,6 +85,7 @@ class Program
                     if (pass2 == guy1.pass)
                     {
                         Console.Clear();
+                        Console.WriteLine($"\t\tWelcome back {guy1.fname}!!");
 
                         while (opt < 6)
                         {
@@ -111,7 +112,7 @@ class Program
                                     break;
                                 case 2:
                                     Console.Clear();
-                                    Console.WriteLine("\t\tEnter amount to withdraw");
+                                    Console.Write("\t\tEnter amount to withdraw:");
                                     deposit=float.Parse(Console.ReadLine());
                                     if(deposit>guy1.balance){
                                         Console.WriteLine($"\t\tCannot withdraw that amount your current balance is {guy1.balance:C2}");
@@ -268,7 +269,7 @@ class Program
     }
 
     static void menu2()
-    {
+    {  
         Console.WriteLine("\t\tEnter 1 to deposit.");
         Console.WriteLine("\t\tEnter 2 to withdraw.");
         Console.WriteLine("\t\tEnter 3 to send money.");
