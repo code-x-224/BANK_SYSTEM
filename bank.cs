@@ -11,48 +11,47 @@ public struct Person
     public float balance;
 }
 
-class Program
+class BankSystem
 {
     static void Main()
     {
         string filename;
-        DateTime currenttime = DateTime.Now;
         string login;
         string pass2;
-        float deposit;
-        Person guy1,guy2;
+        Person currentUser;
         int choice = 0;
-        int opt = 0;
 
-        while (choice != 3)
+        while (choice != 6)
         {
-            menu();
-            Console.Write("\t\tEnter choice:\t");
-            choice = int.Parse(Console.ReadLine());
+            DisplayMenu();
+            Console.Write("\t\tEnter choice: ");
+            if (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("\t\tInvalid input. Please enter a number.");
+                continue;
+            }
 
             switch (choice)
             {
                 case 1:
-                    CreateAccount(out guy1);
+                    CreateAccount(out currentUser);
                     break;
 
                 case 2:
-                    if (LogIn(out guy1, out login, out pass2, out filename)){
+                    if (LogIn(out currentUser, out login, out pass2, out filename))
+                    {
                         Console.Clear();
-                        Console.WriteLine($"\t\tWelcome back {guy1.fname}!!");
-                         while (opt < 6){
-                            menu2();
-                            Console.Write("\t\tEnter option:");
-                            opt = int.Parse(Console.ReadLine());
-                            ProcessOption(opt, guy1, filename, out deposit, currenttime, out guy2);
-                        }
-                     }
-                    else{
+                        Console.WriteLine($"\t\tWelcome back {currentUser.fname}!!");
+                        HandleUserOptions(ref currentUser, filename);
+                    }
+                    else
+                    {
                         Console.WriteLine("\t\tWrong password or account does not exist.");
-                        }
+                    }
                     break;
-                case 3:
-                    Console.WriteLine("\t\tThank you for banking with us!");
+
+                case 6:
+                    Console.WriteLine("\t\tExiting the bank system. Goodbye!");
                     break;
 
                 default:
@@ -62,29 +61,19 @@ class Program
         }
     }
 
-    static void menu()
+    static void DisplayMenu()
     {
-        Console.WriteLine("\t\t################################");
-        Console.WriteLine("\t\t##WELCOME TO CODEX BANK SYSTEM##");
-        Console.WriteLine("\t\t################################");
+        Console.WriteLine("\t\t###################################");
+        Console.WriteLine("\t\t## WELCOME TO COdex BANK SYSTEM ##");
+        Console.WriteLine("\t\t##################################");
         Console.WriteLine("\t\tEnter 1 to create account.");
         Console.WriteLine("\t\tEnter 2 to log in.");
-        Console.WriteLine("\t\tEnter 3 to exit.");
-    }
-
-    static void menu2()
-    {
-        Console.WriteLine("\t\tEnter 1 to deposit.");
-        Console.WriteLine("\t\tEnter 2 to withdraw.");
-        Console.WriteLine("\t\tEnter 3 to send money.");
-        Console.WriteLine("\t\tEnter 4 to check balance");
-        Console.WriteLine("\t\tEnter 5 to change password");
-        Console.WriteLine("\t\tEnter 6 to log out");
+        Console.WriteLine("\t\tEnter 6 to exit.");
     }
 
     static string GetPassword()
     {
-        Console.Write("\t\tEnter password:");
+        Console.Write("\t\tEnter password: ");
         StringBuilder password = new StringBuilder();
 
         while (true)
@@ -100,7 +89,7 @@ class Program
                 if (password.Length > 0)
                 {
                     password.Remove(password.Length - 1, 1);
-                    Console.Write("\b \b"); // Move the cursor back and erase the character
+                    Console.Write("\b \b");
                 }
             }
             else
@@ -110,236 +99,282 @@ class Program
             }
         }
 
-        Console.WriteLine(); // Move to the next line after password input
+        Console.WriteLine();
         return password.ToString();
     }
 
-    static void CreateAccount(out Person guy1)
+    static void CreateAccount(out Person user)
     {
         Console.Clear();
-        Console.Write("\t\tEnter first name:");
-        guy1.fname = Console.ReadLine();
-        Console.Write("\t\tEnter phone number:");
-        guy1.phone = Console.ReadLine();
-        Console.Write("\t\tEnter account number:");
-        guy1.account_no = Console.ReadLine();
-        guy1.pass = GetPassword();
-        Console.Write("\n\t\tEnter account balance:");
-        guy1.balance = float.Parse(Console.ReadLine());
-        string filename = guy1.phone + ".dat";
+        Console.Write("\t\tEnter first name: ");
+        user.fname = Console.ReadLine();
+        Console.Write("\t\tEnter phone number: ");
+        user.phone = Console.ReadLine();
+        Console.Write("\t\tEnter account number: ");
+        user.account_no = Console.ReadLine();
+        user.pass = GetPassword();
+        Console.Write("\t\tEnter account balance: ");
+
+        if (!float.TryParse(Console.ReadLine(), out user.balance) || user.balance < 0)
+        {
+            Console.WriteLine("\t\tInvalid input for balance. Please enter a valid amount.");
+            return;
+        }
+
+        string filename = user.phone + ".dat";
 
         if (File.Exists(filename))
         {
-            Console.WriteLine("\n\t\tSorry !! Account already exists.");
+            Console.WriteLine("\t\tSorry, the account already exists.");
         }
         else
         {
             using (StreamWriter writer = new StreamWriter(filename))
             {
-                writer.WriteLine(guy1.fname);
-                writer.WriteLine(guy1.phone);
-                writer.WriteLine(guy1.account_no);
-                writer.WriteLine(guy1.pass);
-                writer.WriteLine(guy1.balance);
+                writer.WriteLine(user.fname);
+                writer.WriteLine(user.phone);
+                writer.WriteLine(user.account_no);
+                writer.WriteLine(user.pass);
+                writer.WriteLine(user.balance);
             }
 
-            Console.WriteLine("\n\t\tAccount registration successful.");
+            Console.WriteLine("\t\tAccount registration successful.");
         }
     }
 
-static bool LogIn(out Person guy1, out string login, out string pass2, out string filename){
+    static bool LogIn(out Person user, out string login, out string pass2, out string filename)
+    {
         Console.Clear();
-        Console.Write("\t\tEnter phone number:");
+        Console.Write("\t\tEnter phone number: ");
         login = Console.ReadLine();
         pass2 = GetPassword();
         filename = login + ".dat";
 
-        guy1 = new Person(); // Initialize guy1
+        user = new Person();
 
         if (File.Exists(filename))
         {
             using (StreamReader reader = new StreamReader(filename))
             {
-                guy1.fname = reader.ReadLine();
-                guy1.phone = reader.ReadLine();
-                guy1.account_no = reader.ReadLine();
-                guy1.pass = reader.ReadLine();
-                guy1.balance = float.Parse(reader.ReadLine());
+                user.fname = reader.ReadLine();
+                user.phone = reader.ReadLine();
+                user.account_no = reader.ReadLine();
+                user.pass = reader.ReadLine();
+                user.balance = float.Parse(reader.ReadLine());
             }
 
-            // Check if the entered password matches the stored password
-            return guy1.pass == pass2;
+            return user.pass == pass2;
         }
         else
         {
             Console.WriteLine("\t\tAccount does not exist.");
             return false;
         }
-}
+    }
 
-    static void ProcessOption(int opt, Person guy1, string filename, out float deposit, DateTime currenttime, out Person guy2)
+    static void HandleUserOptions(ref Person user, string filename)
     {
-        deposit = 0;
-        guy2 = new Person();
-        guy1 = new Person();
+        int option = 0;
 
-        switch (opt)
+        while (option != 6)
         {
-            case 1:
-                Console.Clear();
-                Console.Write("\t\tEnter amount to deposit:");
-                deposit = float.Parse(Console.ReadLine());
-                using (StreamWriter writer = new StreamWriter(filename))
-                {
-                    guy1.balance += deposit;
-                    writer.WriteLine(guy1.fname);
-                    writer.WriteLine(guy1.phone);
-                    writer.WriteLine(guy1.account_no);
-                    writer.WriteLine(guy1.pass);
-                    writer.WriteLine(guy1.balance);
-                }
-                Console.WriteLine($"\t\tDeposit of Ksh.{deposit:C2} on {currenttime} was successful. Your account balance is {guy1.balance:C2}.Transaction reference:");
-                break;
+            DisplayUserMenu();
+            Console.Write("\t\tEnter option: ");
 
-            case 2:
-                Console.Clear();
-                Console.Write("\t\tEnter amount to withdraw:");
-                deposit = float.Parse(Console.ReadLine());
-                if (deposit > guy1.balance)
-                {
-                    Console.WriteLine($"\t\tCannot withdraw that amount. Your current balance is {guy1.balance:C2}");
-                }
-                else
-                {
-                    using (StreamWriter writer = new StreamWriter(filename))
-                    {
-                        guy1.balance -= deposit;
-                        writer.WriteLine(guy1.fname);
-                        writer.WriteLine(guy1.phone);
-                        writer.WriteLine(guy1.account_no);
-                        writer.WriteLine(guy1.pass);
-                        writer.WriteLine(guy1.balance);
-                    }
-                    Console.WriteLine($"\t\tWithdrawal of Ksh.{deposit:C2} on {currenttime} successful. Your account balance is{guy1.balance:C2}.Transaction reference:");
-                }
-                break;
+            if (!int.TryParse(Console.ReadLine(), out option))
+            {
+                Console.WriteLine("\t\tInvalid input. Please enter a number.");
+                continue;
+            }
 
-            case 3:
-                Console.Clear();
-                string login;
-                Console.Write("\t\tEnter account to send money:");
-                login = Console.ReadLine();
-                string filename2 = login + ".dat";
-                using (FileStream fs = new FileStream(filename2, FileMode.Open, FileAccess.Read))
-                using (BinaryReader reader = new BinaryReader(fs))
-                {
-                    if (reader.PeekChar() != -1)
-                    {
-                        fs.Seek(0, SeekOrigin.Begin);
-                        guy2.fname = reader.ReadString();
-                        guy2.phone = reader.ReadString();
-                        guy2.account_no = reader.ReadString();
-                        guy2.pass = reader.ReadString();
-                        guy2.balance = reader.ReadSingle();
-                        Console.WriteLine("\t\tEnter amount to send:");
-                        deposit = float.Parse(Console.ReadLine());
-                        using (FileStream fsSender = new FileStream(filename, FileMode.Open, FileAccess.ReadWrite))
-                        using (BinaryReader senderReader = new BinaryReader(fsSender))
-                        using (BinaryWriter senderWriter = new BinaryWriter(fsSender))
-                        {
-                            fsSender.Seek(0, SeekOrigin.Begin);
-                            guy1.fname = senderReader.ReadString();
-                            guy1.phone = senderReader.ReadString();
-                            guy1.account_no = senderReader.ReadString();
-                            guy1.pass = senderReader.ReadString();
-                            guy1.balance = senderReader.ReadSingle();
-                            if (deposit <= guy1.balance)
-                            {
-                                fsSender.SetLength(0);
-                                fsSender.Seek(0, SeekOrigin.Begin);
-                                guy2.balance += deposit;
-                                senderWriter.Write(guy2.fname);
-                                senderWriter.Write(guy2.phone);
-                                senderWriter.Write(guy2.account_no);
-                                senderWriter.Write(guy2.pass);
-                                senderWriter.Write(guy2.balance);
+            switch (option)
+            {
+                case 1:
+                    Deposit(ref user, filename);
+                    break;
 
-                                Console.WriteLine($"\t\tTransfer to {guy2.fname} on {currenttime} was successful.Transaction reference:");
+                case 2:
+                    Withdraw(ref user, filename);
+                    break;
 
-                                fsSender.SetLength(0);
-                                fsSender.Seek(0, SeekOrigin.Begin);
-                                guy1.balance -= deposit;
-                                senderWriter.Write(guy1.fname);
-                                senderWriter.Write(guy1.phone);
-                                senderWriter.Write(guy1.account_no);
-                                senderWriter.Write(guy1.pass);
-                                senderWriter.Write(guy1.balance);
+                case 3:
+                    TransferFunds(ref user, filename);
+                    break;
 
-                                Console.WriteLine($"\t\tYour current balance is {guy1.balance:C2}");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\t\tInsufficient balance to send {deposit:C2}! Your current balance is {guy1.balance:C2}");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("\t\tAccount does not exist.");
-                    }
-                }
-                break;
+                case 4:
+                    Console.WriteLine($"\t\tYour current account balance is {user.balance:C2}");
+                    break;
 
-            case 4:
-                Console.WriteLine($"\t\tYour current account balance is {guy1.balance:C2}.Transaction reference:");
-                break;
+                case 5:
+                    ChangePassword(ref user, filename);
+                    break;
 
-            case 5:
-                Console.Clear();
-                string pass2;
-                Console.Write("\t\tEnter current password:");
-                pass2 = Console.ReadLine();
+                case 6:
+                    Console.WriteLine("\t\tLogging out.....");
+                    break;
 
-                if (pass2 == guy1.pass)
-                {
-                    Console.Write("\t\tEnter new password:");
-                    string pass3 = Console.ReadLine();
+                default:
+                    Console.WriteLine("\t\tInvalid option!!!");
+                    break;
+            }
+        }
+    }
 
-                    using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Write))
-                    using (BinaryWriter writer = new BinaryWriter(fs))
-                    {
-                        char[] empty = new char[30];
-                        Array.Clear(empty, 0, empty.Length);
-                        guy1.pass = new string(empty);
-                        guy1.pass += pass3;
+    static void DisplayUserMenu()
+    {
+        Console.WriteLine("\t\tEnter 1 to deposit.");
+        Console.WriteLine("\t\tEnter 2 to withdraw.");
+        Console.WriteLine("\t\tEnter 3 to send money.");
+        Console.WriteLine("\t\tEnter 4 to check balance.");
+        Console.WriteLine("\t\tEnter 5 to change password.");
+        Console.WriteLine("\t\tEnter 6 to log out.");
+    }
 
-                        fs.SetLength(0);
-                        fs.Seek(0, SeekOrigin.Begin);
-                        writer.Write(guy1.fname);
-                        writer.Write(guy1.phone);
-                        writer.Write(guy1.account_no);
-                        writer.Write(guy1.pass);
-                        writer.Write(guy1.balance);
+    static void Deposit(ref Person user, string filename)
+    {
+        Console.Clear();
+        Console.Write("\t\tEnter amount to deposit: ");
+        float depositAmount;
 
-                        Console.WriteLine($"\t\tPassword reset successful. New password is {guy1.pass}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("\t\tWrong password");
-                }
-                break;
+        if (!float.TryParse(Console.ReadLine(), out depositAmount) || depositAmount <= 0)
+        {
+            Console.WriteLine("\t\tInvalid input for deposit. Please enter a valid amount.");
+            return;
+        }
 
-            case 6:
-                Console.WriteLine("\t\tLogging out.....");
-                break;
+        using (StreamWriter writer = new StreamWriter(filename))
+        {
+            user.balance += depositAmount;
+            writer.WriteLine(user.fname);
+            writer.WriteLine(user.phone);
+            writer.WriteLine(user.account_no);
+            writer.WriteLine(user.pass);
+            writer.WriteLine(user.balance);
+        }
 
-            default:
-                Console.WriteLine("\t\tInvalid option!!!");
-                guy1 = new Person(); // Assign a default value
-                deposit = 0;
-                guy2 = new Person();
-                break;
+        Console.WriteLine($"\t\tDeposit of Ksh.{depositAmount:C2} was successful. Your account balance is {user.balance:C2}.");
+    }
+
+    static void Withdraw(ref Person user, string filename)
+    {
+        Console.Clear();
+        Console.Write("\t\tEnter amount to withdraw: ");
+        float withdrawAmount;
+
+        if (!float.TryParse(Console.ReadLine(), out withdrawAmount) || withdrawAmount <= 0)
+        {
+            Console.WriteLine("\t\tInvalid input for withdrawal. Please enter a valid amount.");
+            return;
+        }
+
+        if (withdrawAmount > user.balance)
+        {
+            Console.WriteLine($"\t\tCannot withdraw that amount. Your current balance is {user.balance:C2}");
+        }
+        else
+        {
+            using (StreamWriter writer = new StreamWriter(filename))
+            {
+                user.balance -= withdrawAmount;
+                writer.WriteLine(user.fname);
+                writer.WriteLine(user.phone);
+                writer.WriteLine(user.account_no);
+                writer.WriteLine(user.pass);
+                writer.WriteLine(user.balance);
+            }
+
+            Console.WriteLine($"\t\tWithdrawal of Ksh.{withdrawAmount:C2} was successful. Your account balance is {user.balance:C2}.");
+        }
+    }
+
+    static void TransferFunds(ref Person user, string senderFilename)
+    {
+        Console.Clear();
+        Console.Write("\t\tEnter account to send money: ");
+        string recipientAccount = Console.ReadLine();
+
+        if (!File.Exists(recipientAccount + ".dat"))
+        {
+            Console.WriteLine("\t\tRecipient account does not exist.");
+            return;
+        }
+
+        float depositAmount;
+        Console.Write("\t\tEnter amount to send: ");
+        while (!float.TryParse(Console.ReadLine(), out depositAmount) || depositAmount <= 0)
+        {
+            Console.WriteLine("\t\tInvalid input. Please enter a valid amount.");
+            Console.Write("\t\tEnter amount to send: ");
+        }
+
+        Person recipient = new Person();
+        using (StreamReader recipientReader = new StreamReader(recipientAccount + ".dat"))
+        {
+            recipient.fname = recipientReader.ReadLine();
+            recipient.phone = recipientReader.ReadLine();
+            recipient.account_no = recipientReader.ReadLine();
+            recipient.pass = recipientReader.ReadLine();
+            recipient.balance = float.Parse(recipientReader.ReadLine());
+        }
+
+        if (depositAmount <= user.balance)
+        {
+            using (StreamWriter senderWriter = new StreamWriter(senderFilename))
+            {
+                user.balance -= depositAmount;
+                senderWriter.WriteLine(user.fname);
+                senderWriter.WriteLine(user.phone);
+                senderWriter.WriteLine(user.account_no);
+                senderWriter.WriteLine(user.pass);
+                senderWriter.WriteLine(user.balance);
+            }
+
+            using (StreamWriter recipientWriter = new StreamWriter(recipientAccount + ".dat"))
+            {
+                recipient.balance += depositAmount;
+                recipientWriter.WriteLine(recipient.fname);
+                recipientWriter.WriteLine(recipient.phone);
+                recipientWriter.WriteLine(recipient.account_no);
+                recipientWriter.WriteLine(recipient.pass);
+                recipientWriter.WriteLine(recipient.balance);
+            }
+
+            Console.WriteLine($"\t\tTransfer to {recipient.fname} was successful. Transaction reference:");
+            Console.WriteLine($"\t\tYour current balance is {user.balance:C2}");
+        }
+        else
+        {
+            Console.WriteLine($"\t\tInsufficient balance to send {depositAmount:C2}! Your current balance is {user.balance:C2}");
+        }
+    }
+
+    static void ChangePassword(ref Person user, string filename)
+    {
+        Console.Clear();
+        string currentPassword;
+        Console.Write("\t\tEnter current password: ");
+        currentPassword = GetPassword();
+
+        if (currentPassword == user.pass)
+        {
+            Console.Write("\t\tEnter new password: ");
+            string newPassword = GetPassword();
+
+            using (StreamWriter writer = new StreamWriter(filename))
+            {
+                user.pass = newPassword;
+                writer.WriteLine(user.fname);
+                writer.WriteLine(user.phone);
+                writer.WriteLine(user.account_no);
+                writer.WriteLine(user.pass);
+                writer.WriteLine(user.balance);
+            }
+
+            Console.WriteLine($"\t\tPassword change successful. Your new password is {user.pass}");
+        }
+        else
+        {
+            Console.WriteLine("\t\tWrong password");
         }
     }
 }
