@@ -51,7 +51,7 @@ class BankSystem
                     break;
 
                 case 6:
-                    Console.WriteLine("\t\tExiting the bank system. Goodbye!");
+                    Console.WriteLine("\t\tExiting the bank system.Thank you for banking with us Goodbye!");
                     break;
 
                 default:
@@ -339,7 +339,7 @@ class BankSystem
                 recipientWriter.WriteLine(recipient.balance);
             }
 
-            Console.WriteLine($"\t\tTransfer to {recipient.fname} was successful. Transaction reference:");
+            Console.WriteLine($"\t\tTransfer to {recipient.fname} was successful.");
             Console.WriteLine($"\t\tYour current balance is {user.balance:C2}");
         }
         else
@@ -352,12 +352,12 @@ class BankSystem
     {
         Console.Clear();
         string currentPassword;
-        Console.Write("\t\tEnter current password: ");
+        Console.WriteLine("\t\tEnter current password");
         currentPassword = GetPassword();
 
         if (currentPassword == user.pass)
         {
-            Console.Write("\t\tEnter new password: ");
+            Console.WriteLine("\t\tEnter new password");
             string newPassword = GetPassword();
 
             using (StreamWriter writer = new StreamWriter(filename))
