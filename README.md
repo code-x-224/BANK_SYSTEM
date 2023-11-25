@@ -1,87 +1,85 @@
-# BANK_SYSTEM
 # Bank System Documentation
 
-## Overview
-
-The Bank System is a console-based application that provides basic banking functionalities such as account creation, login, deposit, withdrawal, fund transfer, balance checking, and password change. It is written in C#.
+This is a simple console-based banking system implemented in C#. It allows users to create accounts, log in, and perform various banking operations such as deposit, withdrawal, fund transfer, balance checking, and password change.
 
 ## Table of Contents
-
-1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Usage](#usage)
-4. [Code Structure](#code-structure)
-5. [Functionality Details](#functionality-details)
-    - [1. Create Account](#1-create-account)
-    - [2. Log In](#2-log-in)
-    - [3. Deposit](#3-deposit)
-    - [4. Withdraw](#4-withdraw)
-    - [5. Transfer Funds](#5-transfer-funds)
-    - [6. Check Balance](#6-check-balance)
-    - [7. Change Password](#7-change-password)
-6. [Conclusion](#conclusion)
+- [Introduction](#introduction)
+- [Functionalities](#functionalities)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [License](#license)
 
 ## Introduction
 
-The Bank System allows users to create accounts, log in, and perform various banking operations through a console interface. It uses file storage to persist user data, including account information and balances.
+The Bank System is a console application designed to simulate basic banking operations. It provides a user-friendly interface for account creation, login, and various banking functionalities.
 
-## Features
+## Functionalities
 
-- **Account Management:** Users can create a new account by providing personal information.
-- **Login:** Existing users can log in by entering their phone number and password.
-- **Deposit:** Users can deposit funds into their accounts.
-- **Withdraw:** Users can withdraw funds from their accounts, provided they have sufficient balance.
-- **Transfer Funds:** Users can transfer funds to other accounts.
-- **Check Balance:** Users can check their account balance.
-- **Change Password:** Users can change their account password for security.
+### 1. Create Account
+   - Users can create a new account by providing their personal information.
+   - The account details are stored in a file named `<phone_number>.dat`.
+
+### 2. Log In
+   - Users can log in with their phone number and password.
+   - Account information is read from the corresponding data file.
+   - After successful login, users can perform various banking operations.
+
+### 3. Deposit
+   - Users can deposit a specified amount into their account.
+   - The account balance is updated, and the transaction is recorded in the data file.
+
+### 4. Withdraw
+   - Users can withdraw a specified amount from their account, provided sufficient balance.
+   - The account balance is updated, and the transaction is recorded in the data file.
+
+### 5. Transfer Funds
+   - Users can transfer funds to another account.
+   - The recipient's account is updated, and both transactions are recorded in the respective data files.
+
+### 6. Check Balance
+   - Users can check their account balance.
+
+### 7. Change Password
+   - Users can change their account password after providing the current password.
+
+### 8. Exit
+   - Users can exit the banking system.
 
 ## Usage
 
-1. Run the application.
-2. Choose from the main menu options: create an account, log in, or exit.
-3. Follow the prompts to perform desired operations.
+1. Compile the program using a C# compiler.
+2. Run the compiled executable.
+3. Follow the on-screen prompts to navigate through the menu and perform banking operations.
 
-## Code Structure
+## Screenshots
 
-The code consists of a `BankSystem` class containing various static methods for different functionalities. The `Person` struct represents user information, and user data is stored in files named after their phone numbers.
+**1. Main Menu:**
+![Main Menu](screenshots/main_menu.png)
 
-## Functionality Details
+**2. Create Account:**
+![Create Account](screenshots/create_account.png)
 
-### 1. Create Account
+**3. Log In:**
+![Log In](screenshots/login.png)
 
-- Users can create an account by providing their first name, phone number, account number, password, and initial balance.
-- Account data is stored in a file named after the user's phone number.
+**4. User Menu:**
+![User Menu](screenshots/user_menu.png)
 
-### 2. Log In
+**5. Deposit:**
+![Deposit](screenshots/deposit.png)
 
-- Users can log in by entering their phone number and password.
-- If successful, the user is presented with a menu to perform different operations.
+**6. Withdraw:**
+![Withdraw](screenshots/withdraw.png)
 
-### 3. Deposit
+**7. Transfer Funds:**
+![Transfer Funds](screenshots/transfer_funds.png)
 
-- Users can deposit funds into their accounts.
-- The account balance is updated, and the changes are saved to the corresponding file.
+**8. Check Balance:**
+![Check Balance](screenshots/check_balance.png)
 
-### 4. Withdraw
+**9. Change Password:**
+![Change Password](screenshots/change_password.png)
 
-- Users can withdraw funds from their accounts, provided they have sufficient balance.
-- The account balance is updated, and the changes are saved to the corresponding file.
+## License
 
-### 5. Transfer Funds
-
-- Users can transfer funds to other accounts.
-- The recipient's account is identified by the account number.
-- Balances of both sender and recipient are updated, and changes are saved to the corresponding files.
-
-### 6. Check Balance
-
-- Users can check their account balance, which is displayed on the console.
-
-### 7. Change Password
-
-- Users can change their account password after entering the current password.
-- The new password is updated, and changes are saved to the corresponding file.
-
-## Conclusion
-
-The Bank System provides basic banking operations through a console interface. Users can manage their accounts securely, perform transactions, and check their balances. The application uses file storage for data persistence.
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as per the license terms.
