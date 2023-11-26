@@ -83,6 +83,8 @@ The Bank System is a console application designed to simulate basic banking oper
 ## License
 
 This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as per the license terms.
-## Acknowlegements
 
-Special thanks to the developers(WacoderForever,s1gm9,karisacodes) and contributors (G-CoderX,Stephanie Makori,Voste254,Nyabs254,123Origami) who helped improve this tax calculator.
+## Acknowledgments
+
+We extend our sincere appreciation to the developers (s1gm9,WacoderForever, karisacodes) and contributors (G-CoderX, Stephanie Makori, Voste254, Nyabs254, 123Origami) who have generously contributed to enhancing this bank system.
+
