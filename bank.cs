@@ -167,8 +167,23 @@ namespace Bank_AMS
                                 }
                             } while (accountNumberChecker);
 
-                            // initiate account balance to 0
-                            accountBalance.Add("0");
+                            // Prompt user to enter account balance
+                            bool A_bal = false;
+                            int prompt = 0;
+                            do
+                            {
+                                try
+                                {
+                                    Console.Write("\n\tEnter your account balance: ");
+                                    prompt = Convert.Toint32(Console.Readline());
+                                }
+                                catch (FormatException ex)
+                                {
+                                    Console.WriteLine("\n\tWrong format used!! Try again!!\n\n");
+                                    A_bal = true;
+                                }
+                            } while(A_bal)
+                            accountBalance.Add(prompt.ToString());
 
                             // Update files
                             updateData(firstname, lastname, password, accountBalance, accountNumber, passwordReset);
@@ -176,7 +191,7 @@ namespace Bank_AMS
                             Console.WriteLine("\n\tAccount registration successful!\n\n");
                             Console.WriteLine("\n\tYour username is " + firstname[who_is_signing_up] + lastname[who_is_signing_up]);
                             Console.WriteLine($"\tYour Account number is {accountNumber[who_is_signing_up]}");
-                            Console.WriteLine($"\tYour Account balance is {accountBalance[who_is_signing_up]}. Log in and deposit to change this!");
+                            Console.WriteLine($"\tYour Account balance is {accountBalance[who_is_signing_up]}.");
                             page++;
                         }
                         else
