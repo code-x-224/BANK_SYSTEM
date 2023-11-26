@@ -175,14 +175,14 @@ namespace Bank_AMS
                                 try
                                 {
                                     Console.Write("\n\tEnter your account balance: ");
-                                    prompt = Convert.Toint32(Console.Readline());
+                                    prompt = Convert.ToInt32(Console.ReadLine());
                                 }
                                 catch (FormatException ex)
                                 {
                                     Console.WriteLine("\n\tWrong format used!! Try again!!\n\n");
                                     A_bal = true;
                                 }
-                            } while(A_bal)
+                            } while (A_bal);
                             accountBalance.Add(prompt.ToString());
 
                             // Update files
