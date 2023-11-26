@@ -20,6 +20,8 @@ class BankSystem
         string pass2;
         Person currentUser;
         int choice = 0;
+        // niaje maguyssss
+        Console.WriteLine("hey!!");
 
         while (choice != 6)
         {
@@ -27,7 +29,7 @@ class BankSystem
             Console.Write("\t\tEnter choice: ");
             if (!int.TryParse(Console.ReadLine(), out choice))
             {
-                Console.WriteLine("\t\tInvalid input. Please enter a number.");
+                Console.WriteLine("\t\tInvalid input! Please enter a number!");
                 continue;
             }
 
