@@ -17,7 +17,7 @@ The Bank System is a console application designed to simulate basic banking oper
 
 ### 1. Create Account
    - Users can create a new account by providing their personal information.
-   - The account details are stored in a file named `<phone_number>.dat`.
+
 
 ### 2. Log In
    - Users can log in with their phone number and password.
