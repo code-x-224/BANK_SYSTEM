@@ -51,34 +51,9 @@ The Bank System is a console application designed to simulate basic banking oper
 2. Run the compiled executable.
 3. Follow the on-screen prompts to navigate through the menu and perform banking operations.
 
-## Screenshots
+## User guide
 
-**1. Main Menu:**
-![Main Menu](screenshots/main_menu.png)
-
-**2. Create Account:**
-![Create Account](screenshots/create_account.png)
-
-**3. Log In:**
-![Log In](screenshots/login.png)
-
-**4. User Menu:**
-![User Menu](screenshots/user_menu.png)
-
-**5. Deposit:**
-![Deposit](screenshots/deposit.png)
-
-**6. Withdraw:**
-![Withdraw](screenshots/withdraw.png)
-
-**7. Transfer Funds:**
-![Transfer Funds](screenshots/transfer_funds.png)
-
-**8. Check Balance:**
-![Check Balance](screenshots/check_balance.png)
-
-**9. Change Password:**
-![Change Password](screenshots/change_password.png)
+The user guide video helps the user get familiar with the system. 
 
 ## License
 
