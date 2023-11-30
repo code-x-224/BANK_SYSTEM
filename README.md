@@ -85,3 +85,33 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use, mod
 
 We extend our sincere appreciation to the developers (s1gm9,WacoderForever, karisacodes) and contributors (G-CoderX, Stephanie Makori, Voste254, Nyabs254, 123Origami) who have generously contributed to enhancing this bank system.
 
+
+- **s1gm9**
+  - Lead Developer
+
+- **WacoderForever**
+  - Project Maintainer
+
+- **karisacodes**
+  - Solution Architecture
+
+- **magwach**
+  - Software Tester
+
+- **Halkano_Arero**
+  - Designer
+
+- **Voste254**
+  - Software Quality Assurance
+
+- **G-coderX**
+  - User interface Design
+
+- **Stephanie Makori**
+  - User Experience Design
+
+- **123Origami**
+  - Product Manager
+
+- **nyabs254**
+  - Scrum Master
